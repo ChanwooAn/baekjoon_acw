@@ -4,86 +4,57 @@
 using namespace std;
 
 
+
 vector<string> solution(vector<vector<int>> queries) {
     vector<string> answer;
-
-    for (int i = 0; i < queries.size(); i++) {
-        int n = queries[i][0];
-        int p = queries[i][1];
-        vector<int> child;
+    for(int i=0;i<queries.size();i++){
+        int childNow=queries[i][1];
+        int n=queries[i][0];
+        vector<int> childs;
         
-        if (n == 1) {
+        int parent=0;
+        int child=0;
+        if(n==1){
             answer.push_back("Rr");
             continue;
         }
-
-        if (n == 2) {
-            if (p == 1) {
-                answer.push_back("RR");
-            }
-            else if (p == 4) {
-                answer.push_back("rr");
-            }
-            else {
-                answer.push_back("Rr");
-            }
-            continue;
-        }
-
-
-        while (n > 2) {
-            int parentNow = p / 4;
-            int childNow = p % 4;
-            if (childNow != 0) {
-                parentNow++;
-            }
-            if (childNow == 0)childNow = 4;
-            child.push_back(childNow);
-
-            p = parentNow;
+        while(n>1){
             n--;
-        }
-
-        //2gen에서 판단
-        if (p == 1) {
-            answer.push_back("RR");
-            continue;
-        }
-        else if (p == 4) {
-            answer.push_back("rr");
-            continue;
-        }
-        else {
-            int nextChild = 0;
-            while (n != queries[i][0]) {
-                n++;
-                nextChild = child.back();
-                child.pop_back();
-                if (nextChild == 2 || nextChild == 3) {
-                    continue;
-                }
-                else {
-                    break;
-                }
+            parent=childNow/4;
+            child=childNow%4;
+            
+            if(child!=0){
+                parent++;
+            }else{
+                child=4;
             }
-            if (nextChild == 1) {
+            childs.push_back(child);
+            childNow=parent;
+        }
+        
+        int ch=0;
+        while(!childs.empty()){
+            ch=childs.back();
+            childs.pop_back();
+            if(ch==2 || ch==3){
+                continue;
+            }else if(ch==1){
                 answer.push_back("RR");
-                continue;
-            }
-            else if (nextChild == 4) {
+                break;
+            }else{
                 answer.push_back("rr");
-                continue;
-            }
-            else {
-                answer.push_back("Rr");
-                continue;
+                break;
             }
         }
-
-
+        
+        if(ch==2 || ch==3){
+            answer.push_back("Rr");
+        }
+        
+        
     }
-   
-
-
+    
+    
+    
     return answer;
 }
