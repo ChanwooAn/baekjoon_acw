@@ -1,20 +1,8 @@
-with
-f as (SELECT flavor, sum(total_order) s
-from first_half
-group by flavor)
-,
-j as (SELECT flavor, sum(total_order) s
-from july
-group by flavor)
-
 select flavor
-from(select *
-    from f
+from (
+    select * from first_half
     union
-    select* 
-    from j
-         ) t
+    select * from july) as tmp
 group by flavor
-order by sum(s) desc
-limit 3
-
+order by sum(total_order) desc
+limit 0,3
