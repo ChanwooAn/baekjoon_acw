@@ -1,3 +1,4 @@
+
 val dy = listOf(
     listOf(-1, -1, 0, 0, 1, 1),//even
     listOf(-1, -1, 0, 0, 1, 1)//odd
@@ -18,7 +19,7 @@ var height = 0
 var answer = 0
 lateinit var buildings: Array<IntArray>
 lateinit var visit: Array<Array<Array<Boolean>>>
-val q = arrayListOf<Pair<Int, Int>>()
+
 fun main() {
     val (w, h) = readln().trim().split(" ").map { it.toInt() }
     buildings = Array(h) { readln().trim().split(" ").map { it.toInt() }.toIntArray() }
@@ -64,73 +65,67 @@ fun main() {
 }
 
 
-fun findOutSide(y: Int, x: Int) {
-    q.add(Pair(y, x))
+fun findOutSide(nowY: Int, nowX: Int) {
 
-    while (q.isNotEmpty()) {
-        val (nowY, nowX) = q.removeFirst()
-        val d = if (nowY % 2 == 0) 0 else 1
-        for (i in 0 until 6) {
+    val d = if (nowY % 2 == 0) 0 else 1
+    for (i in 0 until 6) {
 
-            val ny = nowY + dy[d][i]
-            val nx = nowX + dx[d][i]
-            if (visit[nowY][nowX][i]) {
-                continue
-            }
+        val ny = nowY + dy[d][i]
+        val nx = nowX + dx[d][i]
+        if (visit[nowY][nowX][i]) {
+            continue
+        }
 
-            if (ny < 0 || nx < 0 || ny >= height || nx >= width) {
-                visit[nowY][nowX][i] = true
-                continue
-            }
+        if (ny < 0 || nx < 0 || ny >= height || nx >= width) {
+            visit[nowY][nowX][i] = true
+            continue
+        }
 
-            if (buildings[ny][nx] > 0) {
-                //빌딩이라면
-                buildings[nowY][nowX] = OUTSIDE
-                visit[nowY][nowX][i] = true
-                continue
-            }
-
+        if (buildings[ny][nx] > 0) {
+            //빌딩이라면
             buildings[nowY][nowX] = OUTSIDE
             visit[nowY][nowX][i] = true
-            visit[ny][nx][5 - i] = true
-            q.add(Pair(ny, nx))
+            continue
         }
+
+        buildings[nowY][nowX] = OUTSIDE
+        visit[nowY][nowX][i] = true
+        visit[ny][nx][5 - i] = true
+        findOutSide(ny, nx)
     }
+
 
 }
 
-fun bfs(y: Int, x: Int) {
-    q.add(Pair(y, x))
-
-    while (q.isNotEmpty()) {
-        val (nowY, nowX) = q.removeFirst()
-        val d = if (nowY % 2 == 0) 0 else 1
-        for (i in 0 until 6) {
-
-            val ny = nowY + dy[d][i]
-            val nx = nowX + dx[d][i]
-            if (visit[nowY][nowX][i]) {
-                continue
-            }
+fun bfs(nowY: Int, nowX: Int) {
 
 
-            if (ny < 0 || nx < 0 || ny >= height || nx >= width) {
-                answer++
-                visit[nowY][nowX][i] = true
-                continue
-            }//외부와 만나거나
-            if (buildings[ny][nx] == OUTSIDE) {
-                answer++
-                visit[nowY][nowX][i] = true
-                continue
-            }//외벽과 만날 경우
+    val d = if (nowY % 2 == 0) 0 else 1
+    for (i in 0 until 6) {
 
-
-            visit[nowY][nowX][i] = true
-            visit[ny][nx][5 - i] = true
-            q.add(Pair(ny, nx))
-
+        val ny = nowY + dy[d][i]
+        val nx = nowX + dx[d][i]
+        if (visit[nowY][nowX][i]) {
+            continue
         }
 
+
+        if (ny < 0 || nx < 0 || ny >= height || nx >= width) {
+            answer++
+            visit[nowY][nowX][i] = true
+            continue
+        }//외부와 만나거나
+        if (buildings[ny][nx] == OUTSIDE) {
+            answer++
+            visit[nowY][nowX][i] = true
+            continue
+        }//외벽과 만날 경우
+
+
+        visit[nowY][nowX][i] = true
+        visit[ny][nx][5 - i] = true
+        bfs(ny,nx)
     }
+
+
 }
