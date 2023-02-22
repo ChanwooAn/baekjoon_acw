@@ -1,41 +1,23 @@
 class Solution {
+    var answer = 0
+    lateinit var arr:IntArray
     fun solution(numbers: IntArray, target: Int): Int {
-        var answer = 0
+        arr=numbers
         
-        val combArr=mutableListOf<List<Int>>()
-        for(i in 1..numbers.size){
-            comb(numbers,combArr,BooleanArray(numbers.size){false},0,i)
-        }
-        for(i in combArr){
-            val s=i.sum()
-            if(s==target){
-                answer++
-            }
-        }
-        /*
-         양수와 음수의 모든 조합을 뽑기.
-        */
+        dfs(0,numbers.size,0,target)
         
         return answer
     }
-    fun comb(numbers:IntArray,arr:MutableList<List<Int>>,visit:BooleanArray,start:Int,depth:Int)
-    {
-        if(depth==0){
-            arr.add(numbers.mapIndexed{idx,value->
-            if(visit[idx]){
-                value
+    fun dfs(now:Int,n:Int,sum:Int,target:Int){
+        if(now==n){
+            if(sum==target){
+                answer++
             }
-            else{
-                -value
-            }
-            })
+            return
         }
         
-        for(i in start..numbers.size-1){
-            visit[i]=true
-            comb(numbers,arr,visit,i+1,depth-1)
-            visit[i]=false
-        }
-        
+        dfs(now+1,n,sum+arr[now],target)
+        dfs(now+1,n,sum-arr[now],target)
+    
     }
 }
