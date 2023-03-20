@@ -20,11 +20,11 @@ fun main(){
 
         for(j in 0 .. maxCost){
             if(j-appCostNow>=0) {
-                dpArr[i][j] = max(dpArr[i][j], dpArr[i - 1][j - appCostNow] + appMemoryNow)
+                dpArr[i][j] = max(dpArr[i-1][j], dpArr[i - 1][j - appCostNow] + appMemoryNow)
             }//현재 앱을 제외시켰을 경우에 더 큰 메모리를 얻을 수 있다면 update
-
-            dpArr[i][j]=max(dpArr[i][j],dpArr[i-1][j])
-
+            else{
+                dpArr[i][j]=dpArr[i-1][j]
+            }
         }
     }
 
