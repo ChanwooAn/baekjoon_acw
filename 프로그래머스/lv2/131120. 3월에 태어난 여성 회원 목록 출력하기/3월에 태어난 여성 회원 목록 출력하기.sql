@@ -1,6 +1,6 @@
-
-
-SELECT member_id, member_name,gender,Date_format(date_of_birth,'%Y-%m-%d') as date_of_birth
+select member_id,member_name,gender,date_format(date_of_birth,"%Y-%m-%d") as date_of_birth
 from member_profile
-where tlno is not null and month(date_of_birth)=3 and gender='w'
-order by member_id asc
+where date_format(date_of_birth,"%m") = '03' 
+    and tlno is not null
+    and gender='w'
+order by 1 asc
