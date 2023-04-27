@@ -1,10 +1,13 @@
-with seoul as(select *
-from rest_info
-where address like "서울%")
-
-select seoul.rest_id,seoul.rest_name,seoul.food_type, seoul.favorites,
-seoul.address,round(avg(rest_review.review_score),2) as score
-from rest_review,seoul
-where rest_review.rest_id=seoul.rest_id
-group by seoul.rest_id
-order by score desc, favorites desc
+with 
+seoul_rest as
+(select * 
+ from rest_info
+ where address like "서울%")
+ /*
+ 
+ */
+ select s.rest_id,s.rest_name,s.food_type,s.favorites,s.address,round(avg(r.review_score),2) as score
+ from seoul_rest s, rest_review r
+ where s.rest_id=r.rest_id
+ group by s.rest_id
+ order by score desc, favorites desc
