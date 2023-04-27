@@ -1,5 +1,5 @@
-select date_format(b.sales_date,"%Y") as Year,
-date_format(b.sales_date,"%m") as month,
+select year(b.sales_date) as Year,
+month(b.sales_date) as month,
 a.gender,
 count(distinct a.user_id) as users
 from
