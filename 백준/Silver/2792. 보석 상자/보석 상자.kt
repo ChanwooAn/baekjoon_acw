@@ -1,8 +1,9 @@
 lateinit var beadArr: IntArray
+val br=System.`in`.bufferedReader()
 
 fun main() {
-    val (childNum, colorNum) = readln().split(" ").map { it.toInt() }
-    beadArr = IntArray(colorNum) { readln().toInt() }
+    val (childNum, colorNum) = br.readLine().split(" ").map { it.toInt() }
+    beadArr = IntArray(colorNum) { br.readLine().toInt() }
 
     var start = 1
     var end = beadArr.max()
@@ -22,6 +23,7 @@ fun main() {
     }
 
     println(answer)
+    br.close()
 }
 
 fun distributable(size: Int,childNum:Int): Boolean {
